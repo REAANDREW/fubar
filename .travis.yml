@@ -19,11 +19,11 @@ env:
       - secure: oLmzREqvh+h1P/9Fd8EoDNqywwSiBItf1py/MQEWfN9BfwwekhYkIDVmEeWJu25KMlrr4kmKMnZesh624rwBifnMFlhSio3wibAKQpT0Vij09kyEbPIu7X5SO4DVrYkbZl3PmY0S2mxknYzsJABsk1tvGJy2uZmLVPq1aRd2HHDQXpDod+z1UaICZ1ZvVD1DcjRsaECGfHKybhAzCDF8S+eZ6+VQFdLtPpusMwChyortXqcaQt8jJ+Ej9qXxUS8XCEZf47bBwvQ7KkUtWDU4yvgkuBNY0UY6BKhTNEeJQMeZvGO66bWgahA9xHRR8RVl9mTjtMmvPHAZTpMFhaxOa3XgC6O3ue+YvCzdcP9SriVe748Bfoqa2i4lSWlvcgwxc1UjuUG1W2ClK+J3UT2+YMsCXf1q7lhwCq2enn2oEB/Kd1gHWYEpNY9jBC32UZLO4cFaicx7tIQGBBEyDiBNsemePTjYVdjeMycN7as+wVb4TrD75o+A4ysGhfEqdLheOPYyqLwI4ttjQ8hAgMMCd5KaEEKtUTCYWNlH1V6+STTAGARVsBHczg66Ft6JKKRspmvLzS9Vy5eOtZiYdvGUKICwAetkLpohQypOmU0Hcco8mTphaNOAa3wGAmqnsP4qijVXYnl5p+/1bVnEc1jAZIp2IGe0q3EAa0AvPCMyVNU=
 before_install:
   - go get -u github.com/tcnksm/ghr
-  - curl -O https://releases.hashicorp.com/terraform/0.10.2/terraform_0.10.2_linux_amd64.zip
-  - unzip terraform_0.10.2_linux_amd64.zip
+  - curl -o /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.10.2/terraform_0.10.2_linux_amd64.zip
+  - unzip -d /tmp /tmp/terraform.zip
   - mkdir dist
 script:
   - go build -o dist/fubar
 after_success:
   - ghr -username ${USERNAME} -token ${GITHUB_TOKEN} --delete ${VERSION} dist/
-  - terraform apply -var 'key_name=terraform' -var 'fubar.pub'
+  - /tmp/terraform apply -var 'key_name=terraform' -var 'fubar.pub'
