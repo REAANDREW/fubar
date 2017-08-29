@@ -1,10 +1,9 @@
-data "terraform_remote_state" "network" {
-  backend = "s3"
-  config {
-    bucket = "fubar.andrewrea.co.uk"
-    key    = "network/terraform.tfstate"
-    region = "eu-west-1"
-  }
+terraform {
+    backend "s3" {
+        bucket = "fubar.andrewrea.co.uk"
+        key    = "network/terraform.tfstate"
+        region = "eu-west-1"
+    }
 }
 
 # Specify the provider and access details
