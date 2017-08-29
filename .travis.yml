@@ -26,4 +26,4 @@ script:
   - go build -o dist/fubar
 after_success:
   - ghr -username ${USERNAME} -token ${GITHUB_TOKEN} --delete ${VERSION} dist/
-  - /tmp/terraform apply -var 'key_name=terraform' -var 'fubar.pub'
+  - /tmp/terraform apply -var 'key_name=terraform' -var='fubar.pub'
