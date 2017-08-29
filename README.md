@@ -37,14 +37,13 @@ func main() {
 
 5. Create `.travis.yml` ci file for golang
 
-This will build using golang version 1.9 and the latest version available (tip).
+This will build using golang version 1.9
 
 ```
 language: go
 sudo: false
 go:
     - 1.9
-    - tip
 script:
     - go build
 ```
@@ -69,8 +68,7 @@ cp ~/.ssh/fubar.pub /home/vagrant/go/src/github.com/reaandrew/fubar
 language: go
 sudo: false
 go:
-- 1.9
-- tip
+   - 1.9
 env:
   global:
       - USERNAME=reaandrew
