@@ -91,6 +91,12 @@ The variable `GITHUB_TOKEN` is encrypted using:
 travis encrypt `GITHUB_TOKEN="TOKEN HERE"` --add env.global
 ```
 
+9. Confirm you can grab the latest build using the github api and jq to parse the json output
+
+```
+curl -s https://api.github.com/repos/reaandrew/fubar/releases/latest | jq '. | .assets[0] | .browser_download_url' | xargs curl -sOL
+```
+
 AWS_ACCESS_KEY_ID="anaccesskey"
 AWS_SECRET_ACCESS_KEY="asecretkey"
 AWS_DEFAULT_REGION="us-west-2"
