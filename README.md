@@ -17,7 +17,6 @@ echo fubar >> .gitignore
 ```
 
 4. Create a simple webserver which returns `Hello, World!`
-
 ```
 package main
 
@@ -38,8 +37,30 @@ func main() {
 
 5. Create `.travis.yml` ci file for golang
 
+This will build using golang version 1.9 and the latest version available (tip).
+
+```
+language: go
+sudo: false
+go:
+    - 1.9
+    - tip
+script:
+    - go build
 ```
 
+6. Create a new keypair which Github will use to deploy the application.
+
+```
+cd ~/.ssh
+# I created a private and public key named fubar (fubar & fubar.pub)
+ssh-keygen 
+```
+
+7. Copy the public key into the source directory
+
+```
+cp ~/.ssh/fubar.pub /home/vagrant/go/src/github.com/reaandrew/fubar
 ```
 
 $ export AWS_ACCESS_KEY_ID="anaccesskey"
