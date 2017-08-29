@@ -3,6 +3,13 @@ sudo: false
 go:
 - 1.9
 - tip
+branches:
+ only:
+      - master
+      - hotfix
+      - release
+      - develop
+      - /feature-*/
 env:
   global:
       - USERNAME=reaandrew
