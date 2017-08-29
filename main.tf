@@ -135,7 +135,7 @@ resource "aws_instance" "web" {
   provisioner "remote-exec" {
     inline = [
       "curl -s https://api.github.com/repos/reaandrew/fubar/releases/latest | jq '. | .assets[0] | .browser_download_url' | xargs curl -sOL",
-      "chmod +x fubar"
+      "chmod +x fubar",
       "nohup fubar &"
     ]
   }
