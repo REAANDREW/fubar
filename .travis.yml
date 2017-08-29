@@ -31,4 +31,4 @@ after_success:
 - eval `ssh-agent`
 - ssh-add /tmp/fubar
 - /tmp/terraform init
-- /tmp/terraform apply -var 'key_name=terraform' -var 'public_key_path=fubar.pub'
+- /tmp/terraform destroy -var 'key_name=terraform' -var 'public_key_path=fubar.pub'
