@@ -19,6 +19,7 @@ env:
   - secure: qIu4LytkqGZEbdmLibz/ea+xoD9p2GdKG2pvfIR1TW6IEIS2XxzP4oMzW/2H0aJGNJ/Nc/OkON2FAEU97a0nhoqU7b0Wsljqzlfd6+35qqfH/SygiTolmUzuM0EIzTzzWmMCyNRDWMpr32Fqupv/x6KRf/tJ/2WfofI27DYMS5LFQh7XP2oGKTdOxplaoeo4RrOOG9v2hy7ZtxUhCWvERbjHykQWYibfX5Ed2/9ZBBukXsfv9/Snt+oS4+nHX+3weyQk8Uvu+EQ4+bW5/OiNDLtbLNRajrLN6BzWQ7cWj8uPktax5WHoAJbZZPdOKyoz0/6xFVZP458ocqGOoRqB7rGPibc6SYxceO/M0rq5F5TTW4soN2hXvsJun0bmw2nbmHMoe4A7DwNspZC8rcz6ElG7UMATSW9e8Cn09W8eYYf1O3otAwmxFVj0EbL6ZTXhI9Pv8ZBU5NopeH2+4FWYjhDKdMljZxDdwgCFE6y4wKHQKYWUUQsALZp1/Hsp1qg+FWMqQLLYE0P6+9om07jHa01fpC0JykFaw0wFt/sGHYV2pDmUcu6UDibsSaxPq7bbtZzUyLG/ynGyy8HXZtjGkLjYojzcYhlSbJ9IANfZ43t/9C4OJxa9oEiFm34gzWMr9y4pIYNXcQJtZxZmLumF/UnvFJ5qJk5AZBPYupu0QM8=
 before_install:
 - openssl aes-256-cbc -K $encrypted_271c4973ffbe_key -iv $encrypted_271c4973ffbe_iv -in fubar.enc -out /tmp/fubar -d
+- chmod 600 /tmp/fubar
 - go get -u github.com/tcnksm/ghr
 - curl -o /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.10.2/terraform_0.10.2_linux_amd64.zip
 - unzip -d /tmp /tmp/terraform.zip
