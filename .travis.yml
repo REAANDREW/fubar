@@ -4,21 +4,27 @@ go:
 - 1.9
 - tip
 branches:
- only:
-      - master
-      - hotfix
-      - release
-      - develop
-      - /feature-*/
+  only:
+  - master
+  - hotfix
+  - release
+  - develop
+  - /feature-*/
 env:
   global:
-      - USERNAME=reaandrew
-      - VERSION=0.1.0
-      - secure: pHGD1UbmMCk4WaJxJ8iH7NqfoaCUCz7y0BOTvWQPu4TNsAF0um+yidCzYGuyiSGZBoFazuixM1VqCejAEH20gnrNWZzFjJZSkorlE1NDwX8heDac5f3goUarXtnmrp7V9OEpB5AwyRE+vj5mqDmOtwWdRS0G+81momuA+c0PFq4pYoVdun1MQHM6kBJ3y4SmhBK/VRS9dhCoKNAC/8O2fn6Qbo1ET70Y2iiAzqmjCfkpj6Vf8lAdPYTU4LRNJL8FWWaGqEH9ITuW8X3N5Ed0weJero7dS0+lNQu+LWxNU4Sr+H44KNW4nXPCkLSLm5E57Sf9QVtdbz4lZrP1r4SpFdRP23vBJ7TwXURgeBJuEYxcQD508h5P89OqZWxZyt/0KUec9XOW2TKettYFlnuDL2Quw5B8s2qKUYzRYnJcNIsyy2+x78oYVWyt0zBAvOaSI9qxNvZipkUheq3eqCbnpoXrnXQIRUDHub2PIgxPsv43fHH7g2eaq+AZDittd9uaXq7IJ5x/kcSiU/+7SKkKbWfVq/WQCUtAmQKd9fxhKyK+0t7pfnAU7hngFyFiOLVrgZGLFnZtVTD8Ws8435UvRik3HzjsQqoWLtUg4xaU2Flq5lZlDw3bgm3YZmC+VvgxiMV8Qdnq5HQ1VeI7y0xIT3vCy8gxfqU0+ihRZWn5upc=
+  - USERNAME=reaandrew
+  - VERSION=0.1.0
+  - AWS_DEFAULT_REGION="eu-west-1"
+  - secure: pHGD1UbmMCk4WaJxJ8iH7NqfoaCUCz7y0BOTvWQPu4TNsAF0um+yidCzYGuyiSGZBoFazuixM1VqCejAEH20gnrNWZzFjJZSkorlE1NDwX8heDac5f3goUarXtnmrp7V9OEpB5AwyRE+vj5mqDmOtwWdRS0G+81momuA+c0PFq4pYoVdun1MQHM6kBJ3y4SmhBK/VRS9dhCoKNAC/8O2fn6Qbo1ET70Y2iiAzqmjCfkpj6Vf8lAdPYTU4LRNJL8FWWaGqEH9ITuW8X3N5Ed0weJero7dS0+lNQu+LWxNU4Sr+H44KNW4nXPCkLSLm5E57Sf9QVtdbz4lZrP1r4SpFdRP23vBJ7TwXURgeBJuEYxcQD508h5P89OqZWxZyt/0KUec9XOW2TKettYFlnuDL2Quw5B8s2qKUYzRYnJcNIsyy2+x78oYVWyt0zBAvOaSI9qxNvZipkUheq3eqCbnpoXrnXQIRUDHub2PIgxPsv43fHH7g2eaq+AZDittd9uaXq7IJ5x/kcSiU/+7SKkKbWfVq/WQCUtAmQKd9fxhKyK+0t7pfnAU7hngFyFiOLVrgZGLFnZtVTD8Ws8435UvRik3HzjsQqoWLtUg4xaU2Flq5lZlDw3bgm3YZmC+VvgxiMV8Qdnq5HQ1VeI7y0xIT3vCy8gxfqU0+ihRZWn5upc=
+  - secure: X+d18e0zGDE60yzYyUyKPHCRyn4kdDRaArUnkSvGhZYUxVLKmncELlBbDNue2V2GDuZB4ZDhPIuTHMbiW1YzcEtKhYSsy6kIWvBR/yGA7h79MQKAhNG0NDCEwbOpIqII0zG/ja6pQHiIaUgmw/EFp4uCA+1oMm4vte6MkmiTaMr7CGu+NrAIV6Z0h4nak5oIBLHZ6dFDklz8yG7lwPr/ngg3ufakneAB7DA+iPnTq50BAT07adDJxvqVb1kszoza7omdv1qb4yzv8mRNKvTNFveg8ZXBLqvZlkGYiKekjb9HYrdgRyfBOu/lBMLXdyJ0w1v/uSYjGud0xCpMMOqEgv+vm4VBmrBbvjDa5nzpsPgkGJpMgpVUOQXd2Gs1N/1eYJi5PMLD1hfqaTL8RZ1a+arZ6Z81QEGf8qCJ+UUn//l+t0+X17kq3ENXxu7qU69N/mPR2LYAps6PLe63ssoTstHqs8hBdTP9tHTyZbgvkYIGY66YeQs2JRYSM3k2OrwBpG9rHzc6LEKeOpH2/eAXwL5jeTNr5hY1sfK2PDlAD7/p7G+lCm+SnD9GmskCWq22o8VLuFoWgeGwkqdHgc3V0V1NWzC2MhLraVriYeg3Vsm5d9LBixsq3+Q/xDNNGEKBLineKL1cm0zt0OwXnWKt8+RhPm+pYvk9icE7etry1Uk=
+  - secure: oLmzREqvh+h1P/9Fd8EoDNqywwSiBItf1py/MQEWfN9BfwwekhYkIDVmEeWJu25KMlrr4kmKMnZesh624rwBifnMFlhSio3wibAKQpT0Vij09kyEbPIu7X5SO4DVrYkbZl3PmY0S2mxknYzsJABsk1tvGJy2uZmLVPq1aRd2HHDQXpDod+z1UaICZ1ZvVD1DcjRsaECGfHKybhAzCDF8S+eZ6+VQFdLtPpusMwChyortXqcaQt8jJ+Ej9qXxUS8XCEZf47bBwvQ7KkUtWDU4yvgkuBNY0UY6BKhTNEeJQMeZvGO66bWgahA9xHRR8RVl9mTjtMmvPHAZTpMFhaxOa3XgC6O3ue+YvCzdcP9SriVe748Bfoqa2i4lSWlvcgwxc1UjuUG1W2ClK+J3UT2+YMsCXf1q7lhwCq2enn2oEB/Kd1gHWYEpNY9jBC32UZLO4cFaicx7tIQGBBEyDiBNsemePTjYVdjeMycN7as+wVb4TrD75o+A4ysGhfEqdLheOPYyqLwI4ttjQ8hAgMMCd5KaEEKtUTCYWNlH1V6+STTAGARVsBHczg66Ft6JKKRspmvLzS9Vy5eOtZiYdvGUKICwAetkLpohQypOmU0Hcco8mTphaNOAa3wGAmqnsP4qijVXYnl5p+/1bVnEc1jAZIp2IGe0q3EAa0AvPCMyVNU=
 before_install:
-- go get -u github.com/tcnksm/ghr
-- mkdir dist
+  - go get -u github.com/tcnksm/ghr
+  - curl -O https://releases.hashicorp.com/terraform/0.10.2/terraform_0.10.2_linux_amd64.zip
+  - unzip terraform_0.10.2_linux_amd64.zip
+  - mkdir dist
 script:
-- go build -o dist/fubar
+  - go build -o dist/fubar
 after_success:
-- ghr -username ${USERNAME} -token ${GITHUB_TOKEN} --delete ${VERSION} dist/
+  - ghr -username ${USERNAME} -token ${GITHUB_TOKEN} --delete ${VERSION} dist/
+  - terraform apply -var 'key_name=terraform' -var 'fubar.pub'
