@@ -1,30 +1,32 @@
 language: go
 sudo: false
 go:
-  - 1.9
+- 1.9
 branches:
   only:
-      - master
-      - hotfix
-      - release
-      - develop
-      - /feature-*/
+  - master
+  - hotfix
+  - release
+  - develop
+  - /feature-*/
 env:
   global:
-      - USERNAME=reaandrew
-      - VERSION=0.1.0
-      - AWS_DEFAULT_REGION="eu-west-1"
-      - secure: pHGD1UbmMCk4WaJxJ8iH7NqfoaCUCz7y0BOTvWQPu4TNsAF0um+yidCzYGuyiSGZBoFazuixM1VqCejAEH20gnrNWZzFjJZSkorlE1NDwX8heDac5f3goUarXtnmrp7V9OEpB5AwyRE+vj5mqDmOtwWdRS0G+81momuA+c0PFq4pYoVdun1MQHM6kBJ3y4SmhBK/VRS9dhCoKNAC/8O2fn6Qbo1ET70Y2iiAzqmjCfkpj6Vf8lAdPYTU4LRNJL8FWWaGqEH9ITuW8X3N5Ed0weJero7dS0+lNQu+LWxNU4Sr+H44KNW4nXPCkLSLm5E57Sf9QVtdbz4lZrP1r4SpFdRP23vBJ7TwXURgeBJuEYxcQD508h5P89OqZWxZyt/0KUec9XOW2TKettYFlnuDL2Quw5B8s2qKUYzRYnJcNIsyy2+x78oYVWyt0zBAvOaSI9qxNvZipkUheq3eqCbnpoXrnXQIRUDHub2PIgxPsv43fHH7g2eaq+AZDittd9uaXq7IJ5x/kcSiU/+7SKkKbWfVq/WQCUtAmQKd9fxhKyK+0t7pfnAU7hngFyFiOLVrgZGLFnZtVTD8Ws8435UvRik3HzjsQqoWLtUg4xaU2Flq5lZlDw3bgm3YZmC+VvgxiMV8Qdnq5HQ1VeI7y0xIT3vCy8gxfqU0+ihRZWn5upc=
-      - secure: X+d18e0zGDE60yzYyUyKPHCRyn4kdDRaArUnkSvGhZYUxVLKmncELlBbDNue2V2GDuZB4ZDhPIuTHMbiW1YzcEtKhYSsy6kIWvBR/yGA7h79MQKAhNG0NDCEwbOpIqII0zG/ja6pQHiIaUgmw/EFp4uCA+1oMm4vte6MkmiTaMr7CGu+NrAIV6Z0h4nak5oIBLHZ6dFDklz8yG7lwPr/ngg3ufakneAB7DA+iPnTq50BAT07adDJxvqVb1kszoza7omdv1qb4yzv8mRNKvTNFveg8ZXBLqvZlkGYiKekjb9HYrdgRyfBOu/lBMLXdyJ0w1v/uSYjGud0xCpMMOqEgv+vm4VBmrBbvjDa5nzpsPgkGJpMgpVUOQXd2Gs1N/1eYJi5PMLD1hfqaTL8RZ1a+arZ6Z81QEGf8qCJ+UUn//l+t0+X17kq3ENXxu7qU69N/mPR2LYAps6PLe63ssoTstHqs8hBdTP9tHTyZbgvkYIGY66YeQs2JRYSM3k2OrwBpG9rHzc6LEKeOpH2/eAXwL5jeTNr5hY1sfK2PDlAD7/p7G+lCm+SnD9GmskCWq22o8VLuFoWgeGwkqdHgc3V0V1NWzC2MhLraVriYeg3Vsm5d9LBixsq3+Q/xDNNGEKBLineKL1cm0zt0OwXnWKt8+RhPm+pYvk9icE7etry1Uk=
-      - secure: oLmzREqvh+h1P/9Fd8EoDNqywwSiBItf1py/MQEWfN9BfwwekhYkIDVmEeWJu25KMlrr4kmKMnZesh624rwBifnMFlhSio3wibAKQpT0Vij09kyEbPIu7X5SO4DVrYkbZl3PmY0S2mxknYzsJABsk1tvGJy2uZmLVPq1aRd2HHDQXpDod+z1UaICZ1ZvVD1DcjRsaECGfHKybhAzCDF8S+eZ6+VQFdLtPpusMwChyortXqcaQt8jJ+Ej9qXxUS8XCEZf47bBwvQ7KkUtWDU4yvgkuBNY0UY6BKhTNEeJQMeZvGO66bWgahA9xHRR8RVl9mTjtMmvPHAZTpMFhaxOa3XgC6O3ue+YvCzdcP9SriVe748Bfoqa2i4lSWlvcgwxc1UjuUG1W2ClK+J3UT2+YMsCXf1q7lhwCq2enn2oEB/Kd1gHWYEpNY9jBC32UZLO4cFaicx7tIQGBBEyDiBNsemePTjYVdjeMycN7as+wVb4TrD75o+A4ysGhfEqdLheOPYyqLwI4ttjQ8hAgMMCd5KaEEKtUTCYWNlH1V6+STTAGARVsBHczg66Ft6JKKRspmvLzS9Vy5eOtZiYdvGUKICwAetkLpohQypOmU0Hcco8mTphaNOAa3wGAmqnsP4qijVXYnl5p+/1bVnEc1jAZIp2IGe0q3EAa0AvPCMyVNU=
+  - USERNAME=reaandrew
+  - VERSION=0.1.0
+  - AWS_DEFAULT_REGION="eu-west-1"
+  - secure: gsEmJsKaRIZs4i+lMuC5HVZ3JRAbhYZeNHxdRR+JvsD8upUGXLwLq7DCF9uQALfhEwf7bNEF4i6NMeH8fkCbqjTYzklg2B9Zp9/AJEEorUSFkupVeCUBVvw8VE2LqgITZ2V4VvbAbLF9ef3sI1YFtV+Dd4Cqe5KWM4yFTxrLl9dvwe2dAT2C40w7dBOBHMo8vVO+Gck4psNfw2i+j9ibiZsYOFQijVIFiqDZ/+Ux8aE9kMQwnfnmv/1xEaINDTaBgzRk0g6xjDhEQKGU4NCa8UEEo5T6fKzFRa0Yo6IR3fza7NaXXckHdo0/3187aR5cIOau1xnWKNw9w2HTwAtdrLlAXB1cVeKaGpPPXjZBdSOKg1M8hW+Fdc02ckRpEdMyDhSY4F4KiYV68FnjQQJiexFAcSd+rnmbeYefC0uL5kTgu9jbn8wk5OKb/fXvFrAHGudCvyssrdCnxhmtgIwuiDG/5sNhuvjsdzqNqLVH3YOTYMSi9JS5NeyxVT1u0D93kNlsZz4B+Yc4w2ymPq4Mnz/DLhg9fdfzMNzwp3KdPRFrUTc9RIPm3jwBI3Gy3OewQXVGesV7+ria5f89fsBXV7ZoBXxVnGGZvVde2UqvaL32JjP0z1EqTIzJ6CnNIKCgnV/rSl9jqCmooPhkLurMeLUduvNwj94r9vADYZZ98Cw=
+  - secure: VQxTsOaHrBRynONiKwgd960L1HxBd7LeYkoAFgVFLAKgHuq5SNF7oLa05kewxQYd7WjetVIXQtT+u4Xjf9fMIAh+40K1x5Zb7L3QexPvyvyyXfpoimCjDMj7XLe0K3skM0dnAvo8pmFDWmvVB1dZg5h2SpgPJ0nJuwRnMIo7qcLymzMAez2Heys1yaEHsprq2gG7Md2E7mQIYQz+SsfR/nGevAaGCJuwmXWAs6gXWvSHG+xbQqhKA+J9wuVoR/BTiHLUSPXMY0KczpkB5zL5d+EouDxy2Nxb1m3na98/sIRkryW10+MbQzPJTWf6VDv87k2+ZwCzRzC7879/NasbydSnTIbU7wubGswRRTMgZzh4JBpoEI0ifpsFSub+PgaJTVT2y/xNOcJA7MTPFKxEnLFfYHeo6FXyhnRz21x1WID6Jy2ENrdr8prFCf01L4nr7bgoN2MmJOYJAvaZor63pxplDfEkPT/87g6ZqXIPF4bvYr5lDwl7QBJMm4FApSb5iX3tyM29mZAA+Va9jruZmDMKvYNFBjFL7Fa71M4fxxEyB7g2221J/r2XBCd+t2O7h2aY+RyLsiRDyDMTGLYA4VFxVKRk3vuwxvqskMQKdYj1pynh+YB+8ELBh0FZODEvOSg/HA1m5zwswRxfBAfz/ZfT59K9kmenrTveGrqQJBE=
+  - secure: qIu4LytkqGZEbdmLibz/ea+xoD9p2GdKG2pvfIR1TW6IEIS2XxzP4oMzW/2H0aJGNJ/Nc/OkON2FAEU97a0nhoqU7b0Wsljqzlfd6+35qqfH/SygiTolmUzuM0EIzTzzWmMCyNRDWMpr32Fqupv/x6KRf/tJ/2WfofI27DYMS5LFQh7XP2oGKTdOxplaoeo4RrOOG9v2hy7ZtxUhCWvERbjHykQWYibfX5Ed2/9ZBBukXsfv9/Snt+oS4+nHX+3weyQk8Uvu+EQ4+bW5/OiNDLtbLNRajrLN6BzWQ7cWj8uPktax5WHoAJbZZPdOKyoz0/6xFVZP458ocqGOoRqB7rGPibc6SYxceO/M0rq5F5TTW4soN2hXvsJun0bmw2nbmHMoe4A7DwNspZC8rcz6ElG7UMATSW9e8Cn09W8eYYf1O3otAwmxFVj0EbL6ZTXhI9Pv8ZBU5NopeH2+4FWYjhDKdMljZxDdwgCFE6y4wKHQKYWUUQsALZp1/Hsp1qg+FWMqQLLYE0P6+9om07jHa01fpC0JykFaw0wFt/sGHYV2pDmUcu6UDibsSaxPq7bbtZzUyLG/ynGyy8HXZtjGkLjYojzcYhlSbJ9IANfZ43t/9C4OJxa9oEiFm34gzWMr9y4pIYNXcQJtZxZmLumF/UnvFJ5qJk5AZBPYupu0QM8=
 before_install:
-  - go get -u github.com/tcnksm/ghr
-  - curl -o /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.10.2/terraform_0.10.2_linux_amd64.zip
-  - unzip -d /tmp /tmp/terraform.zip
-  - mkdir dist
+- openssl aes-256-cbc -K $encrypted_271c4973ffbe_key -iv $encrypted_271c4973ffbe_iv -in fubar.enc -out /tmp/fubar -d
+- go get -u github.com/tcnksm/ghr
+- curl -o /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.10.2/terraform_0.10.2_linux_amd64.zip
+- unzip -d /tmp /tmp/terraform.zip
+- mkdir dist
 script:
-  - go build -o dist/fubar
+- go build -o dist/fubar
 after_success:
-  - ghr -username ${USERNAME} -token ${GITHUB_TOKEN} --delete ${VERSION} dist/
-  - /tmp/terraform init
-  - /tmp/terraform apply -var 'key_name=terraform' -var 'public_key_path=fubar.pub'
+- ghr -username ${USERNAME} -token ${GITHUB_TOKEN} --delete ${VERSION} dist/
+- ssh-add /tmp/fubar
+- /tmp/terraform init
+- /tmp/terraform apply -var 'key_name=terraform' -var 'public_key_path=fubar.pub'

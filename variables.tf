@@ -7,6 +7,13 @@ Example: ~/.ssh/terraform.pub
 DESCRIPTION
 }
 
+variable "default_tags" {
+  type = "map"
+  default = {
+    Name = "fubar"
+  }
+}
+
 variable "key_name" {
   description = "Desired name of AWS key pair"
 }

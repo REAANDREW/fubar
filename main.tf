@@ -15,11 +15,13 @@ provider "aws" {
 # Create a VPC to launch our instances into
 resource "aws_vpc" "default" {
   cidr_block = "10.0.0.0/16"
+  tags = "${var.default_tags}"
 }
 
 # Create an internet gateway to give our subnet access to the outside world
 resource "aws_internet_gateway" "default" {
   vpc_id = "${aws_vpc.default.id}"
+  tags = "${var.default_tags}"
 }
 
 # Grant the VPC internet access on its main route table
@@ -34,6 +36,7 @@ resource "aws_subnet" "default" {
   vpc_id                  = "${aws_vpc.default.id}"
   cidr_block              = "10.0.1.0/24"
   map_public_ip_on_launch = true
+  tags = "${var.default_tags}"
 }
 
 # A security group for the ELB so it is accessible via the web
@@ -41,6 +44,7 @@ resource "aws_security_group" "elb" {
   name        = "terraform_example_elb"
   description = "Used in the terraform"
   vpc_id      = "${aws_vpc.default.id}"
+  tags = "${var.default_tags}"
 
   # HTTP access from anywhere
   ingress {
@@ -65,6 +69,7 @@ resource "aws_security_group" "default" {
   name        = "terraform_example"
   description = "Used in the terraform"
   vpc_id      = "${aws_vpc.default.id}"
+  tags = "${var.default_tags}"
 
   # SSH access from anywhere
   ingress {
@@ -93,6 +98,7 @@ resource "aws_security_group" "default" {
 
 resource "aws_elb" "web" {
   name = "terraform-example-elb"
+  tags = "${var.default_tags}"
 
   subnets         = ["${aws_subnet.default.id}"]
   security_groups = ["${aws_security_group.elb.id}"]
@@ -112,6 +118,9 @@ resource "aws_key_pair" "auth" {
 }
 
 resource "aws_instance" "web" {
+
+  tags = "${var.default_tags}"
+
   # The connection block tells our provisioner how to
   # communicate with the resource (instance)
   connection {
