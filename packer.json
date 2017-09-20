@@ -11,9 +11,7 @@
     {
         "type": "shell",
         "inline": [
-			"curl -s https://api.github.com/repos/reaandrew/fubar/releases/latest | jq '. | .assets[0] | .browser_download_url' | xargs curl -sOL",
-			"chmod +x fubar",
-			"sudo nohup fubar &"
+			"curl -s https://api.github.com/repos/reaandrew/fubar/releases/latest | jq '. | .assets[0] | .browser_download_url' | xargs curl -sOL"
         ]
     }
   ],
