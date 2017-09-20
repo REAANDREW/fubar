@@ -1,0 +1,31 @@
+{
+  "provisioners": [
+    {
+        "type": "shell",
+        "inline": [
+            "sudo yum -y install epel-release",
+            "sudo yum -y update",
+            "sudo yum -y install jq"
+        ]
+    },
+    {
+        "type": "shell",
+        "inline": [
+			"curl -s https://api.github.com/repos/reaandrew/fubar/releases/latest | jq '. | .assets[0] | .browser_download_url' | xargs curl -sOL",
+			"chmod +x fubar",
+			"sudo nohup fubar &"
+        ]
+    }
+  ],
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "region": "eu-west-1",
+      "source_ami": "ami-061b1560",
+      "instance_type": "t2.micro",
+      "ssh_username": "centos",
+      "ami_name": "fubar {{timestamp}}"
+    }
+  ],
+  "post-processors": []
+}

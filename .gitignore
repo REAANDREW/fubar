@@ -14,3 +14,4 @@
 .glide/
 fubar
 .terraform
+terraform.tfstate.backup

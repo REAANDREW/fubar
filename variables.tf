@@ -10,8 +10,12 @@ DESCRIPTION
 variable "default_tags" {
   type = "map"
   default = {
-    Name = "fubar"
+    Project = "fubar"
   }
+}
+
+variable "vpc_id" {
+    description = "The VPC in which to deploy"
 }
 
 variable "key_name" {
@@ -23,9 +27,9 @@ variable "aws_region" {
   default     = "eu-west-1"
 }
 
-# Ubuntu Precise 17.04 LTS (x64)
+# Centos 7
 variable "aws_amis" {
   default = {
-    eu-west-1 = "ami-1446b66d"
+    eu-west-1 = "ami-555aa12c"
   }
 }
