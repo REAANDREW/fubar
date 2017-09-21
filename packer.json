@@ -1,16 +1,14 @@
 {
+  "variables": {
+  },
   "provisioners": [
     {
         "type": "shell",
         "inline": [
-            "sudo yum -y install epel-release",
-            "sudo yum -y update",
-            "sudo yum -y install jq"
-        ]
-    },
-    {
-        "type": "shell",
-        "inline": [
+            "sudo yum -y install wget",
+            "wget -O jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64",
+            "chmod +x ./jq",
+            "sudo cp jq /usr/bin",
 			"curl -s https://api.github.com/repos/reaandrew/fubar/releases/latest | jq '. | .assets[0] | .browser_download_url' | xargs curl -sOL"
         ]
     }
@@ -22,7 +20,9 @@
       "source_ami": "ami-061b1560",
       "instance_type": "t2.micro",
       "ssh_username": "centos",
-      "ami_name": "fubar {{timestamp}}"
+      "ami_name": "fubar",
+      "force_deregister": true,
+      "force_delete_snapshot": true
     }
   ],
   "post-processors": []

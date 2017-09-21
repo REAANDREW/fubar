@@ -14,10 +14,6 @@ variable "default_tags" {
   }
 }
 
-variable "vpc_id" {
-    description = "The VPC in which to deploy"
-}
-
 variable "key_name" {
   description = "Desired name of AWS key pair"
 }
