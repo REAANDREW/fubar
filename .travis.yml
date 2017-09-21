@@ -25,6 +25,7 @@ before_install:
 - unzip -d /tmp /tmp/terraform.zip
 - mkdir dist
 script:
+- go get
 - go build -o dist/fubar
 after_success:
 - ghr -username ${USERNAME} -token ${GITHUB_TOKEN} --delete ${VERSION} dist/
