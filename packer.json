@@ -3,13 +3,23 @@
   },
   "provisioners": [
     {
+      "type": "file",
+      "source": "etc/systemd/system/fubar.service",
+      "destination": "/home/centos/fubar.service"
+    },
+    {
         "type": "shell",
         "inline": [
             "sudo yum -y install wget",
             "wget -O jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64",
             "chmod +x ./jq",
-            "sudo cp jq /usr/bin",
-			"curl -s https://api.github.com/repos/reaandrew/fubar/releases/latest | jq '. | .assets[0] | .browser_download_url' | xargs curl -sOL"
+            "sudo mv jq /usr/bin",
+			"curl -s https://api.github.com/repos/reaandrew/fubar/releases/latest | jq '. | .assets[0] | .browser_download_url' | xargs curl -sOL",
+            "chmod +x fubar",
+            "sudo mv fubar /usr/bin/",
+            "sudo mv fubar.service /etc/systemd/system/fubar.service",
+            "sudo sudo systemctl enable fubar.service",
+            "sudo sudo systemctl start fubar.service"
         ]
     }
   ],
