@@ -116,6 +116,16 @@ resource "aws_key_pair" "auth" {
   public_key = "${file(var.public_key_path)}"
 }
 
+data "aws_ami" "fubar_ami" {
+  most_recent      = true
+  owners = ["self"]
+
+  filter {
+    name   = "name"
+    values = ["fubar"]
+  }
+}
+
 resource "aws_instance" "web" {
 
   tags = "${var.default_tags}"
@@ -124,7 +134,7 @@ resource "aws_instance" "web" {
   # communicate with the resource (instance)
   connection {
     # The default username for our AMI
-    user = "ubuntu"
+    user = "centos"
 
     # The connection will use the local SSH agent for authentication.
   }
@@ -133,7 +143,8 @@ resource "aws_instance" "web" {
 
   # Lookup the correct AMI based on the region
   # we specified
-  ami = "${lookup(var.aws_amis, var.aws_region)}"
+  # ami = "${lookup(var.aws_amis, var.aws_region)}"
+  ami = "${data.aws_ami.fubar_ami.image_id}"
 
   # The name of our SSH keypair we created above.
   key_name = "${aws_key_pair.auth.id}"
