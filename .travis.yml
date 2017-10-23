@@ -1,29 +1,26 @@
-language: go
-sudo: false
-go:
-- 1.9
-branches:
-  only:
-  - master
-  - hotfix
-  - release
-  - develop
-  - "/feature-*/"
-before_install:
-- openssl aes-256-cbc -K $encrypted_397fac9379ec_key -iv $encrypted_397fac9379ec_iv
-  -in fubar.enc -out /tmp -d
-- openssl aes-256-cbc -K $encrypted_271c4973ffbe_key -iv $encrypted_271c4973ffbe_iv
-  -in fubar.enc -out /tmp/fubar -d
-- chmod 600 /tmp/fubar
-- go get -u github.com/tcnksm/ghr
-- curl -o /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.10.2/terraform_0.10.2_linux_amd64.zip
-- unzip -d /tmp /tmp/terraform.zip
-- mkdir dist
-script:
-- go get
-- go build -o dist/fubar
-after_success:
-- ghr -username ${USERNAME} -token ${GITHUB_TOKEN} --delete ${VERSION} dist/
-env:
-  global:
-    secure: ZXEbsGmRB9ID+1xuMhzdiWOKKc2Ym7JE/3G+XYbLL9vwNHCyb+3kS+m2sXKZrivsX0uta1Ra8VFe5eXUE8xu63KTIjjdRkotrdMh5pcCLO+OteeZ0LAH022qE3uDdhVKL5aH9S9Ft4a9E0No7yE53H3bPfH++zDSbBN9QD/R9JLA2intFP9APLJOHSjwJI7O+rYkWP1+t5LHlZ7IhADaXH8dabYaT7OHlUnbG+0hScDQ/SLPG6UjnOV37V8QGZnY4fKV2wEv8l/J5GXelpmfQdxgPOcIw70RESsX1fdKJBELozDMVSmyP6aWvVN8PW64SLNVszBu1RKicS80QRHwRf2TLRWwf8zdFW7im9peDEX5U/oxVLsJ8VDLlSYYOosPN/qgYoDwtN5qYGGhe+FSGIBrBJY4r05zyzvjYEORjK0DpmZusrJ/AhoWjshpKRzxCDWVenSWjdQSpyuAxNKULqHt4KQcK4kWgeW+Fvpo0WPcG/FD2oreNYEiVoXUt6Ts2Jm/rzAmaxB4Prjyy37XR+NFd76dXVxk7sVlG+KwNtCSH+DWuKviTgF1Fx0K+uKVgdh6jUUPr81WKlLrMCjkpFPpyrnX6N1Kot+NAsKqQnjgKPbxTjaLTjQN78Dve3M5xQNqR+dQI9cJtiTdatCGLteyXYWzPJmykSsbmkCdaA8=
+#   language: go
+#   sudo: false
+#   go:
+#   - 1.9
+#   branches:
+#     only:
+#     - master
+#     - hotfix
+#     - release
+#     - develop
+#     - "/feature-*/"
+#   before_install:
+#   - openssl aes-256-cbc -K $encrypted_397fac9379ec_key -iv $encrypted_397fac9379ec_iv
+#     -in fubar.enc -out /tmp -d
+#   - openssl aes-256-cbc -K $encrypted_271c4973ffbe_key -iv $encrypted_271c4973ffbe_iv
+#     -in fubar.enc -out /tmp/fubar -d
+#   - chmod 600 /tmp/fubar
+#   - go get -u github.com/tcnksm/ghr
+#   - curl -o /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.10.2/terraform_0.10.2_linux_amd64.zip
+#   - unzip -d /tmp /tmp/terraform.zip
+#   - mkdir dist
+#   script:
+#   - go get
+#   - go build -o dist/fubar
+#   after_success:
+#   - ghr -username ${USERNAME} -token ${GITHUB_TOKEN} --delete ${VERSION} dist/
