@@ -18,8 +18,11 @@ phases:
       - echo GOPATH - $GOPATH
       - echo Create dir in GOPATH for sources
       - mkdir -p /tmp/${PACKAGE}
+      - ls -la ${CODEBUILD_SRC_DIR}/
       - mv ${CODEBUILD_SRC_DIR}/* /tmp/${PACKAGE}
+      - ls -la ${CODEBUILD_SRC_DIR}/
       - cp -a /tmp/${PACKAGE} ${CODEBUILD_SRC_DIR}/
+      - ls -la ${CODEBUILD_SRC_DIR}/
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
