@@ -161,7 +161,8 @@ resource "aws_iam_policy" "codebuild_policy" {
         "logs:CreateLogStream",
         "logs:PutLogEvents",
         "codepipeline:GetPipeline",
-        "s3:*"
+        "s3:*",
+        "ecr:GetAuthorizationToken"
       ]
     },
     {
