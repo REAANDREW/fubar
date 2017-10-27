@@ -1,6 +1,6 @@
 terraform {
     backend "s3" {
-        bucket = "fubar.andrewrea.co.uk"
+        bucket = "something.andrewrea.co.uk"
         key    = "network/application/terraform.tfstate"
         region = "eu-west-2"
     }
@@ -143,7 +143,7 @@ EOF
 }
 
 resource "aws_iam_policy" "codebuild_policy" {
-  name        = "codebuild-policy"
+  name        = "fubar-codebuild-policy"
   path        = "/service-role/"
   description = "Policy used in trust relationship with CodeBuild"
 

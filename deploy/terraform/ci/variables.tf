@@ -5,7 +5,7 @@ variable "aws_region" {
 
 variable "ci_bucket" {
   description = "The project owner"
-  default     = "ci.fubar.andrewrea.co.uk"
+  default     = "ci.something.andrewrea.co.uk"
 }
 
 variable "owner" {
