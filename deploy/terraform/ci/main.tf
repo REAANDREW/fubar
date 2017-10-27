@@ -17,7 +17,7 @@ resource "aws_s3_bucket" "develop" {
 }
 
 resource "aws_iam_role" "codepipeline_role" {
-  name = "test-role"
+  name = "fubar-role"
 
   assume_role_policy = <<EOF
 {
@@ -36,7 +36,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "codepipeline_policy" {
-  name = "codepipeline_policy"
+  name = "fubar_codepipeline_policy"
   role = "${aws_iam_role.codepipeline_role.id}"
   policy = <<EOF
 {
@@ -57,10 +57,23 @@ resource "aws_iam_role_policy" "codepipeline_policy" {
         "codebuild:StartBuild"
       ],
       "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetParameters"
+      ],
+      "Resource": [
+        "arn:aws:ssm:${var.aws_region}:${var.aws_account_id}:parameter/fubar-*"
+      ]
     }
   ]
 }
 EOF
+}
+
+data "aws_ssm_parameter" "GITHUB_TOKEN" {
+  name  = "fubar-github-token"
 }
 
 resource "aws_codepipeline" "develop" {
@@ -81,12 +94,13 @@ resource "aws_codepipeline" "develop" {
       owner            = "ThirdParty"
       provider         = "GitHub"
       version          = "1"
-      output_artifacts = ["test"]
+      output_artifacts = ["fubar"]
 
       configuration {
         Owner      = "${var.owner}"
         Repo       = "${var.repository}"
         Branch     = "master"
+        OAuthToken = "${data.aws_ssm_parameter.GITHUB_TOKEN.value}"
       }
     }
   }
@@ -99,7 +113,7 @@ resource "aws_codepipeline" "develop" {
       category        = "Build"
       owner           = "AWS"
       provider        = "CodeBuild"
-      input_artifacts = ["test"]
+      input_artifacts = ["fubar"]
       version         = "1"
 
       configuration {
@@ -110,7 +124,7 @@ resource "aws_codepipeline" "develop" {
 }
 
 resource "aws_iam_role" "codebuild_role" {
-  name = "codebuild-role-"
+  name = "fubar-codebuild-role"
 
   assume_role_policy = <<EOF
 {
@@ -147,8 +161,17 @@ resource "aws_iam_policy" "codebuild_policy" {
         "logs:CreateLogStream",
         "logs:PutLogEvents",
         "codepipeline:GetPipeline",
-        "s3:*"
+        "s3:*",
       ]
+    },
+    {
+        "Effect": "Allow",
+        "Action": [
+            "ecr:*"
+        ],
+        "Resource": [
+            "arn:aws:ecr:eu-west-2:776648872426:repository/fubar"
+        ]
     }
   ]
 }
@@ -168,27 +191,17 @@ resource "aws_codebuild_project" "foo" {
   service_role = "${aws_iam_role.codebuild_role.arn}"
 
   artifacts {
-    type = "NO_ARTIFACTS"
+    type = "CODEPIPELINE"
   }
 
   environment {
     compute_type    = "BUILD_GENERAL1_SMALL"
     image           = "${var.aws_build_image}"
     type            = "LINUX_CONTAINER"
-    privileged_mode = false
-
-    environment_variable {
-      "name"  = "SOME_KEY1"
-      "value" = "SOME_VALUE1"
-    }
+    privileged_mode = true
   }
 
   source {
-    type     = "GITHUB"
-    location = "https://github.com/${var.owner}/${var.repository}.git"
-  }
-
-  tags {
-    "Environment" = "Test"
+    type     = "CODEPIPELINE"
   }
 }

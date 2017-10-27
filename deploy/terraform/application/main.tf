@@ -2,7 +2,7 @@ terraform {
     backend "s3" {
         bucket = "fubar.andrewrea.co.uk"
         key    = "network/application/terraform.tfstate"
-        region = "eu-west-1"
+        region = "eu-west-2"
     }
 }
 
