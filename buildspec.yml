@@ -20,6 +20,7 @@ phases:
       - mv go/ /opt
       - export PATH="/opt/go/bin/":$PATH
       - export PATH=$PATH:$(go env GOPATH)/bin
+      - export GOPATH="$(pwd)":$(go env GOPATH)
       - make build
       - docker build -t $IMAGE_REPO_NAME:latest .
       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG      
