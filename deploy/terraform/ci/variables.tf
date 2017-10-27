@@ -20,5 +20,10 @@ variable "repository" {
 
 variable "aws_build_image" {
   description = "The docker image to use in AWS Build"
-  default     = "aws/codebuild/golang:1.7.3"
+  default     = "aws/codebuild/docker:1.12.1"
+}
+
+variable "aws_account_id" {
+    description = "the aws account id"
+    default     = "776648872426"
 }
