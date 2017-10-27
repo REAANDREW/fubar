@@ -7,11 +7,12 @@ env:
     AWS_ACCOUNT_ID: "776648872426"
     AWS_DEFAULT_REGION: "eu-west-2"
     PACKAGE: "github.com/reaandrew/fubar"
+    GOLANG_VERSION: "1.9.2"
 phases:
   install:
     commands:
-      - curl -LO https://redirector.gvt1.com/edgedl/go/go1.9.2.linux-amd64.tar.gz
-      - tar -xvzf go1.9.2.linux-amd64.tar.gz
+      - curl -LO "https://redirector.gvt1.com/edgedl/go/go${GOLANG_VERSION}.linux-amd64.tar.gz"
+      - tar -xvzf "go${GOLANG_VERSION}.linux-amd64.tar.gz"
       - mv go/ /opt
       - export PATH="/opt/go/bin/":$PATH
       - mkdir -p /tmp/${PACKAGE}
