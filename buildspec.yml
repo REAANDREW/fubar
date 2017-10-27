@@ -14,23 +14,14 @@ phases:
       - tar -xvzf go1.9.2.linux-amd64.tar.gz
       - mv go/ /opt
       - export PATH="/opt/go/bin/":$PATH
-      - echo CODEBUILD_SRC_DIR - $CODEBUILD_SRC_DIR
-      - echo GOPATH - $GOPATH
-      - echo Create dir in GOPATH for sources
       - mkdir -p /tmp/${PACKAGE}
-      - ls -la ${CODEBUILD_SRC_DIR}/
       - mv ${CODEBUILD_SRC_DIR}/* /tmp/${PACKAGE}
-      - ls -la ${CODEBUILD_SRC_DIR}/
       - mv "/tmp/$(echo ${PACKAGE} | cut -d '/' -f1)" ${CODEBUILD_SRC_DIR}/
-      - ls -la ${CODEBUILD_SRC_DIR}/
   pre_build:
     commands:
-      - echo Logging in to Amazon ECR...
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION)
   build:
     commands:
-      - echo Build started on `date`
-      - echo Building the Docker image...          
       - export PATH="/opt/go/bin/":$PATH
       - cd ${CODEBUILD_SRC_DIR}/${PACKAGE}
       - make build_production
@@ -38,6 +29,4 @@ phases:
       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
   post_build:
     commands:
-      - echo Build completed on `date`
-      - echo Pushing the Docker image...
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
