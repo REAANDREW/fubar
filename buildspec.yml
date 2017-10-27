@@ -20,7 +20,6 @@ phases:
       - mv go/ /opt
       - export PATH="/opt/go/bin/":$PATH
       - export PATH=$PATH:$(go env GOPATH)/bin
-      - export GOPATH="$(pwd)":$(go env GOPATH)
       - echo "GOPATH = $GOPATH"
       - mkdir -p "$(go env GOPATH)/{src,bin,pkg}"
       - make build

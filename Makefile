@@ -4,7 +4,7 @@ GO_FILES = $(shell find ./ -type f -name '*.go')
 
 .PHONY: deps
 deps:
-	go get -t
+	go get github.com/coreos/go-systemd/daemon
 
 .PHONY: packer
 packer:
