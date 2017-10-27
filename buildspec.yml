@@ -22,7 +22,8 @@ phases:
       - echo $(ls -la /tmp)
       - echo $(ls -la /tmp/${PACKAGE})
       - mv /tmp/${PACKAGE} ${CODEBUILD_SRC_DIR}/
-      - echo $(ls -la)
+      - echo $(ls -la ${CODEBUILD_SRC_DIR}/)
+      - echo $(ls -la ${CODEBUILD_SRC_DIR}/${PACKAGE})
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
@@ -32,7 +33,7 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker image...          
       - export PATH="/opt/go/bin/":$PATH
-      - cd ${GOPATH}/src/${PACKAGE}
+      - cd ${CODEBUILD_SRC_DIR}/${PACKAGE}
       - make build_production
       - docker build -t $IMAGE_REPO_NAME:latest .
       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
