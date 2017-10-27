@@ -22,7 +22,7 @@ phases:
       - export PATH=$PATH:$(go env GOPATH)/bin
       - echo "GOPATH = $GOPATH"
       - mkdir -p "$(go env GOPATH)/{src,bin,pkg}"
-      - make build
+      - make build_production
       - docker build -t $IMAGE_REPO_NAME:latest .
       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG      
   post_build:

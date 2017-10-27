@@ -31,5 +31,9 @@ init_keys:
 	cp "$$HOME/.ssh/$(PROJECT_NAME).pub" "$(shell pwd)"
 
 .PHONY: build
-build: $(GO_GILES) deps
+build: $(GO_FILES) deps
 	go build
+
+.PHONY: build_production
+build_production: $(GO_FILES) deps
+	CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -a -installsuffix cgo -o fubar .
