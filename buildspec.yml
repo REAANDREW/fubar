@@ -20,7 +20,6 @@ phases:
       - mkdir -p /tmp/${PACKAGE}
       - ls -la ${CODEBUILD_SRC_DIR}/
       - mv ${CODEBUILD_SRC_DIR}/* /tmp/${PACKAGE}
-      - mv ${CODEBUILD_SRC_DIR}/.* /tmp/${PACKAGE}
       - ls -la ${CODEBUILD_SRC_DIR}/
       - mv "/tmp/$(echo ${PACKAGE} | cut -d '/' -f1)" ${CODEBUILD_SRC_DIR}/
       - ls -la ${CODEBUILD_SRC_DIR}/
