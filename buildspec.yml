@@ -6,7 +6,22 @@ env:
     IMAGE_TAG: "latest"
     AWS_ACCOUNT_ID: "776648872426"
     AWS_DEFAULT_REGION: "eu-west-2"
+    PACKAGE: "github.com/reaandrew/fubar"
 phases:
+  install:
+    commands:
+      - curl -LO https://redirector.gvt1.com/edgedl/go/go1.9.2.linux-amd64.tar.gz
+      - tar -xvzf go1.9.2.linux-amd64.tar.gz
+      - mv go/ /opt
+      - export PATH="/opt/go/bin/":$PATH
+      - echo CODEBUILD_SRC_DIR - $CODEBUILD_SRC_DIR
+      - echo GOPATH - $GOPATH
+      - echo Create dir in GOPATH for sources
+      - mkdir -p ${GOPATH}/src/${PACKAGE}
+      - echo Copy source files into GOPATH
+      - echo cp -a ${CODEBUILD_SRC_DIR}/.  ${GOPATH}/src/${PACKAGE}
+      - cp -a ${CODEBUILD_SRC_DIR}/.  ${GOPATH}/src/${PACKAGE}
+
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
@@ -15,16 +30,11 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...          
-      - curl -LO https://redirector.gvt1.com/edgedl/go/go1.9.2.linux-amd64.tar.gz
-      - tar -xvzf go1.9.2.linux-amd64.tar.gz
-      - mv go/ /opt
       - export PATH="/opt/go/bin/":$PATH
-      - export PATH=$PATH:$(go env GOPATH)/bin
-      - echo "GOPATH = $GOPATH"
-      - mkdir -p "$(go env GOPATH)/{src,bin,pkg}"
+      - cd ${GOPATH}/src/${PACKAGE}
       - make build_production
       - docker build -t $IMAGE_REPO_NAME:latest .
-      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG      
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
   post_build:
     commands:
       - echo Build completed on `date`
