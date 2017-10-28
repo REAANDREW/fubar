@@ -1,0 +1,22 @@
+[
+    {
+        "name": "fubar-http",
+        "image": "776648872426.dkr.ecr.eu-west-2.amazonaws.com/fubar",
+        "cpu": 10,
+        "memory": 512,
+        "links": [],
+        "portMappings": [
+            {
+                "containerPort": 8080,
+                "hostPort": 8080,
+                "protocol": "tcp"
+            }
+        ],
+        "essential": true,
+        "entryPoint": [],
+        "command": [],
+        "environment": [],
+        "mountPoints": [],
+        "volumesFrom": []
+    }
+]

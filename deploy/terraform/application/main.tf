@@ -168,3 +168,158 @@ resource "aws_instance" "web" {
     ]
   }
 }
+
+resource "aws_ecs_cluster" "main" {
+    name = "${var.ecs_cluster_name}"
+}
+
+resource "aws_autoscaling_group" "ecs-cluster" {
+    availability_zones = ["${var.availability_zone}"]
+    name = "ECS ${var.ecs_cluster_name}"
+    min_size = "${var.autoscale_min}"
+    max_size = "${var.autoscale_max}"
+    desired_capacity = "${var.autoscale_desired}"
+    health_check_type = "EC2"
+    launch_configuration = "${aws_launch_configuration.ecs.name}"
+    vpc_zone_identifier = ["${aws_subnet.main.id}"]
+}
+
+resource "aws_launch_configuration" "ecs" {
+  name = "ECS ${var.ecs_cluster_name}"
+  image_id = "${lookup(var.amis, var.region)}"
+  instance_type = "${var.instance_type}"
+  security_groups = ["${aws_security_group.ecs.id}"]
+  iam_instance_profile = "${aws_iam_instance_profile.ecs.name}"
+}
+
+resource "aws_iam_role" "ecs_host_role" {
+  name = "ecs_host_role"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": [
+          "ecs.amazonaws.com",
+          "ec2.amazonaws.com"
+        ]
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy" "ecs_instance_role_policy" {
+  name = "ecs_instance_role_policy"
+  role = "${aws_iam_role.ecs_host_role.id}"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect":"Allow",
+      "Action": "ecs:*",
+      "Resource": ["*"]
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role" "ecs_service_role" {
+  name = "ecs_service_role"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": [
+          "ecs.amazonaws.com",
+          "ec2.amazonaws.com"
+        ]
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy" "ecs_service_role_policy" {
+    name = "ecs_service_role_policy"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect":"Allow",
+      "Action": [
+        "elasticloadbalancing:Describe*",
+        "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
+        "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
+        "ec2:Describe*",
+        "ec2:AuthorizeSecurityGroupIngress"
+      ],
+      "Resource": ["*"]
+    }
+  ]
+}
+EOF
+    role = "${aws_iam_role.ecs_service_role.id}"
+}
+
+resource "aws_iam_instance_profile" "ecs" {
+    name = "ecs-instance-profile"
+    path = "/"
+    roles = ["${aws_iam_role.ecs_host_role.name}"]
+}
+
+resource "aws_elb" "fubar-http" {
+  name = "fubar-http-elb"
+  security_groups = ["${aws_security_group.load_balancers.id}"]
+  subnets = ["${aws_subnet.main.id}"]
+
+  listener {
+      lb_protocol = "http"
+      lb_port = 80
+
+      instance_protocol = "http"
+      instance_port = 8080
+  }
+
+  health_check {
+      healthy_threshold = 3
+      unhealthy_threshold = 2
+      timeout = 3
+      target = "HTTP:8080/"
+      interval = 5
+  }
+
+  cross_zone_load_balancing = true
+}
+
+resource "aws_ecs_task_definition" "fubar-http" {
+  family = "fubar-http"
+  container_definitions = "${file("task-definitions/test-http.json")}"
+}
+
+resource "aws_ecs_service" "fubar-http" {
+  name = "fubar-http"
+  cluster = "${aws_ecs_cluster.main.id}"
+  task_definition = "${aws_ecs_task_definition.fubar-http.arn}"
+  iam_role = "${aws_iam_role.ecs_service_role.arn}"
+  desired_count = 2
+  depends_on = ["aws_iam_role_policy.ecs_service_role_policy"]
+
+  load_balancer {
+      elb_name = "${aws_elb.fubar-http.id}"
+      container_name = "fubar-http"
+      container_port = 8080
+  }
+}

@@ -30,3 +30,42 @@ variable "aws_amis" {
     eu-west-2 = "ami-c22236a6"
   }
 }
+
+variable "availability_zones" {
+    description = "The availability zone"
+    default = ["eu-west-1a", "eu-west-2b"]
+}
+
+variable "ecs_cluster_name" {
+    description = "The name of the Amazon ECS cluster."
+    default = "fubar"
+}
+
+variable "amis" {
+    description = "Which AMI to spawn. Defaults to the AWS ECS optimized images."
+    # TODO: support other regions.
+    default = {
+        eu-west-2 = "ami-eb62708f"
+    }
+}
+
+variable "autoscale_min" {
+    default = "1"
+    description = "Minimum autoscale (number of EC2)"
+}
+
+variable "autoscale_max" {
+    default = "3"
+    description = "Maximum autoscale (number of EC2)"
+}
+
+variable "autoscale_desired" {
+    default = "2"
+    description = "Desired autoscale (number of EC2)"
+}
+
+
+variable "instance_type" {
+    default = "t2.micro"
+}
+
