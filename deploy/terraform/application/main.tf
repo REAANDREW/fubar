@@ -151,7 +151,10 @@ resource "aws_iam_role_policy" "ecs_instance_role_policy" {
   "Statement": [
     {
       "Effect":"Allow",
-      "Action": "ecs:*",
+      "Action": [
+        "ecs:*",
+        "ecr:*"
+      ],
       "Resource": ["*"]
     }
   ]
