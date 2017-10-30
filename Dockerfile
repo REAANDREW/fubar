@@ -3,5 +3,5 @@ FROM alpine
 WORKDIR /app
 COPY fubar .
 
-EXPOSE 8080
+EXPOSE 45000
 CMD ["./fubar"]

@@ -14,5 +14,5 @@ func handler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/", handler)
 	daemon.SdNotify(false, "READY=1")
-	fmt.Println(http.ListenAndServe(":8080", nil))
+	fmt.Println(http.ListenAndServe(":45000", nil))
 }
