@@ -1,10 +1,6 @@
-variable "public_key_path" {
-  description = <<DESCRIPTION
-Path to the SSH public key to be used for authentication.
-Ensure this keypair is added to your local SSH agent so provisioners can
-connect.
-Example: ~/.ssh/terraform.pub
-DESCRIPTION
+variable "ssh_pubkey_file" {
+    description = "Path to an SSH public key"
+    default = "~/.ssh/fubar.pub"
 }
 
 variable "default_tags" {
@@ -14,8 +10,8 @@ variable "default_tags" {
   }
 }
 
-variable "key_name" {
-  description = "Desired name of AWS key pair"
+variable "aws_vpc_id" {
+    default = "vpc-0c03c765"
 }
 
 variable "aws_region" {
@@ -31,9 +27,9 @@ variable "aws_amis" {
   }
 }
 
-variable "availability_zones" {
+variable "availability_zone" {
     description = "The availability zone"
-    default = ["eu-west-1a", "eu-west-2b"]
+    default = "eu-west-2a"
 }
 
 variable "ecs_cluster_name" {
