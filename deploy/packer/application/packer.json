@@ -1,42 +1,33 @@
 {
   "variables": {
+      "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+      "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+      "aws_region": "eu-west-2"
   },
   "provisioners": [
     {
-      "type": "file",
-      "source": "etc/systemd/system/fubar.service",
-      "destination": "/home/centos/fubar.service"
-    },
-    {
         "type": "shell",
         "inline": [
-            "sudo yum -y install wget",
-            "wget -O jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64",
-            "chmod +x ./jq",
-            "sudo mv jq /usr/bin",
-			"curl -s https://api.github.com/repos/reaandrew/fubar/releases/latest | jq '. | .assets[0] | .browser_download_url' | xargs curl -sOL",
-            "chmod +x fubar",
-            "sudo mv fubar /usr/bin/",
-            "sudo mv fubar.service /etc/systemd/system/fubar.service",
-            "sudo sudo systemctl enable fubar.service",
-            "sudo sudo systemctl start fubar.service"
+            "sudo yum install -y ecs-init",
+            "sudo yum -y install docker > /dev/null 2>&1",
+            "sudo service docker start",
+            "sudo usermod -aG docker $USER",
+            "sudo `aws ecr get-login --no-include-email --region {{user `aws_region`}}`",
+            "sudo start ecs"
         ]
     }
   ],
   "builders": [
     {
       "type": "amazon-ebs",
-      "region": "eu-west-1",
-      "source_ami_filter": {
-          "most_recent":true,
-          "owners":["self"],
-          "filters":{
-            "name":"base-centos-7"
-          }
-      },
+      "region": "{{user `aws_region`}}",
+      "source_ami": "ami-1a7f6d7e",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
       "instance_type": "t2.micro",
-      "ssh_username": "centos",
-      "ami_name": "fubar",
+      "iam_instance_profile": "EC2_PullContainers",
+      "ssh_username": "ec2-user",
+      "ami_name": "rhel-ecs-host",
       "force_deregister": true,
       "force_delete_snapshot": true
     }

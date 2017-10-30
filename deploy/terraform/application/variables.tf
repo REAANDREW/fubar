@@ -19,11 +19,10 @@ variable "aws_region" {
   default     = "eu-west-2"
 }
 
-# Centos 7
 variable "aws_amis" {
   default = {
     eu-west-1 = "ami-0d063c6b",
-    eu-west-2 = "ami-c22236a6"
+    eu-west-2 = "ami-17524e73"
   }
 }
 
