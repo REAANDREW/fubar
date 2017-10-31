@@ -8,23 +8,31 @@ deps:
 
 .PHONY: packer
 packer:
-	packer build packer.json
+	AWS_PROFILE=fubar packer build packer.json
+
+.PHONY: init_ci
+init_ci:
+	AWS_PROFILE=fubar terraform init deploy/terraform/ci
+
+.PHONY: init_application
+init_application:
+	AWS_PROFILE=fubar terraform init deploy/terraform/application
 
 .PHONY: provision_ci
 provision_ci:
-	terraform apply deploy/terraform/ci
+	AWS_PROFILE=fubar terraform apply deploy/terraform/ci
 
 .PHONY: provision_application
 provision_application:
-	terraform apply deploy/terraform/application
+	AWS_PROFILE=fubar terraform apply deploy/terraform/application
 	
 .PHONY: destroy_ci
 destroy_ci:
-	terraform destroy --force deploy/terraform/ci
+	AWS_PROFILE=fubar terraform destroy --force deploy/terraform/ci
 
 .PHONY: destroy_application
 destroy_application:
-	terraform destroy --force deploy/terraform/application
+	AWS_PROFILE=fubar terraform destroy --force deploy/terraform/application
 
 .PHONY: build
 build: $(GO_FILES) deps
