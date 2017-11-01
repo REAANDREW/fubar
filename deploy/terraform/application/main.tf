@@ -37,9 +37,19 @@ data "aws_subnet" "main" {
     id = "subnet-5b977f20"
 }
 
+# TODO: figure out how to support creating multiple subnets, one for each
+# availability zone.
+data "aws_subnet" "secondary" {
+    id = "subnet-28979562"
+}
 
 resource "aws_route_table_association" "external-main" {
     subnet_id = "${data.aws_subnet.main.id}"
+    route_table_id = "${data.aws_route_table.external.id}"
+}
+
+resource "aws_route_table_association" "external-secondary" {
+    subnet_id = "${data.aws_subnet.secondary.id}"
     route_table_id = "${data.aws_route_table.external.id}"
 }
 
@@ -50,10 +60,10 @@ resource "aws_security_group" "load_balancers" {
 
   # TODO: do we need to allow ingress besides TCP 80 and 443?
   ingress {
-      from_port = 0
-      to_port = 0
-      protocol = "-1"
-      cidr_blocks = ["0.0.0.0/0"]
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   # TODO: this probably only needs egress to the ECS security group.
@@ -106,7 +116,7 @@ resource "aws_autoscaling_group" "ecs-cluster" {
     desired_capacity = "${var.autoscale_desired}"
     health_check_type = "EC2"
     launch_configuration = "${aws_launch_configuration.ecs.name}"
-    vpc_zone_identifier = ["${data.aws_subnet.main.id}"]
+    vpc_zone_identifier = ["${data.aws_subnet.main.id}","${data.aws_subnet.secondary.id}"]
 }
 
 resource "aws_launch_configuration" "ecs" {
@@ -211,28 +221,54 @@ resource "aws_iam_instance_profile" "ecs" {
     role = "${aws_iam_role.ecs_host_role.name}"
 }
 
-resource "aws_elb" "fubar-http" {
-  name = "fubar-http-elb"
+resource "aws_alb" "front" {
+  name            = "fubar-http-alb"
+  internal        = false
   security_groups = ["${aws_security_group.load_balancers.id}"]
-  subnets = ["${data.aws_subnet.main.id}"]
+  subnets         = ["${data.aws_subnet.main.id}","${data.aws_subnet.secondary.id}"]
 
-  listener {
-      lb_protocol = "http"
-      lb_port = 80
+  enable_deletion_protection = false
+}
 
-      instance_protocol = "http"
-      instance_port = 45000
-  }
+/**
+ * Target group for ALB
+ */
+resource "aws_alb_target_group" "web" {
+  name     = "fubar-http-alb-target-group"
+  port     = 45000
+  protocol = "HTTP"
+  vpc_id   = "${var.aws_vpc_id}"
 
   health_check {
-      healthy_threshold = 3
-      unhealthy_threshold = 2
-      timeout = 3
-      target = "HTTP:45000/"
-      interval = 5
+    path = "/"
   }
+}
 
-  cross_zone_load_balancing = true
+/**
+ * HTTP Lister for ALB
+ */
+resource "aws_alb_listener" "front_80" {
+   load_balancer_arn = "${aws_alb.front.arn}"
+   port = "80"
+   protocol = "HTTP"
+   default_action {
+     target_group_arn = "${aws_alb_target_group.web.arn}"
+     type = "forward"
+   }
+}
+
+
+resource "aws_alb_listener_rule" "api-https" {
+  listener_arn = "${aws_alb_listener.front_80.arn}"
+  priority = 1
+  action {
+    type = "forward"
+    target_group_arn = "${aws_alb_target_group.web.arn}"
+  }
+  condition {
+    field = "path-pattern"
+    values = ["/*"]
+  }
 }
 
 resource "aws_ecs_task_definition" "fubar-http" {
@@ -246,11 +282,11 @@ resource "aws_ecs_service" "fubar-http" {
   task_definition = "${aws_ecs_task_definition.fubar-http.arn}"
   iam_role = "${aws_iam_role.ecs_service_role.arn}"
   desired_count = 2
-  depends_on = ["aws_iam_role_policy.ecs_service_role_policy"]
+  depends_on = ["aws_iam_role_policy.ecs_service_role_policy", "aws_alb_listener.front_80"]
 
   load_balancer {
-      elb_name = "${aws_elb.fubar-http.id}"
+      target_group_arn = "${aws_alb_target_group.web.arn}"
       container_name = "fubar-http"
-      container_port = 0
+      container_port = 45000
   }
 }
