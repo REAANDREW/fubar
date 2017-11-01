@@ -50,7 +50,7 @@ variable "autoscale_min" {
 }
 
 variable "autoscale_max" {
-    default = "3"
+    default = "4"
     description = "Maximum autoscale (number of EC2)"
 }
 

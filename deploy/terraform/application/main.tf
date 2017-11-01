@@ -251,6 +251,6 @@ resource "aws_ecs_service" "fubar-http" {
   load_balancer {
       elb_name = "${aws_elb.fubar-http.id}"
       container_name = "fubar-http"
-      container_port = 45000
+      container_port = 0
   }
 }
