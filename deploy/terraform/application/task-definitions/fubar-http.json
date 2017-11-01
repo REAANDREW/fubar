@@ -3,12 +3,12 @@
         "name": "fubar-http",
         "image": "776648872426.dkr.ecr.eu-west-2.amazonaws.com/fubar",
         "cpu": 10,
-        "memory": 512,
+        "memory": 256,
         "links": [],
         "portMappings": [
             {
+                "hostPort": 0,
                 "containerPort": 45000,
-                "hostPort": 45000,
                 "protocol": "tcp"
             }
         ],

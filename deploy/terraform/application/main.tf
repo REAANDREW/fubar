@@ -205,6 +205,8 @@ resource "aws_iam_role_policy" "ecs_service_role_policy" {
         "elasticloadbalancing:Describe*",
         "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
         "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
+        "elasticloadbalancing:RegisterTargets",
+        "elasticloadbalancing:DeregisterTargets",
         "ec2:Describe*",
         "ec2:AuthorizeSecurityGroupIngress"
       ],
@@ -281,7 +283,7 @@ resource "aws_ecs_service" "fubar-http" {
   cluster = "${aws_ecs_cluster.main.id}"
   task_definition = "${aws_ecs_task_definition.fubar-http.arn}"
   iam_role = "${aws_iam_role.ecs_service_role.arn}"
-  desired_count = 2
+  desired_count = 6
   depends_on = ["aws_iam_role_policy.ecs_service_role_policy", "aws_alb_listener.front_80"]
 
   load_balancer {
