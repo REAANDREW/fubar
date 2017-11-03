@@ -8,7 +8,7 @@ deps:
 
 .PHONY: packer
 packer:
-	AWS_PROFILE=fubar packer build packer.json
+	AWS_PROFILE=fubar packer build deploy/packer/application/packer.json
 
 .PHONY: init_ci
 init_ci:

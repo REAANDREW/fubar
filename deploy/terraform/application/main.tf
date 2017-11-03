@@ -16,6 +16,17 @@ resource "aws_key_pair" "fubar" {
     public_key = "${file(var.ssh_pubkey_file)}"
 }
 
+data "aws_ami" "ecs_ami" {
+  most_recent      = true
+  owners = ["self"]
+
+  filter {
+    name   = "name"
+    values = ["rhel-ecs-host"]
+  }
+}
+
+
 data "aws_vpc" "main" {
   id = "${var.aws_vpc_id}"
 }
@@ -115,13 +126,66 @@ resource "aws_autoscaling_group" "ecs-cluster" {
     max_size = "${var.autoscale_max}"
     desired_capacity = "${var.autoscale_desired}"
     health_check_type = "EC2"
+    health_check_grace_period = 300
     launch_configuration = "${aws_launch_configuration.ecs.name}"
     vpc_zone_identifier = ["${data.aws_subnet.main.id}","${data.aws_subnet.secondary.id}"]
 }
 
+resource "aws_autoscaling_policy" "agents-scale-up" {
+    name = "agents-scale-up"
+    scaling_adjustment = 1
+    adjustment_type = "ChangeInCapacity"
+    cooldown = 300
+    autoscaling_group_name = "${aws_autoscaling_group.ecs-cluster.name}"
+}
+
+resource "aws_autoscaling_policy" "agents-scale-down" {
+    name = "agents-scale-down"
+    scaling_adjustment = -1
+    adjustment_type = "ChangeInCapacity"
+    cooldown = 300
+    autoscaling_group_name = "${aws_autoscaling_group.ecs-cluster.name}"
+}
+
+resource "aws_cloudwatch_metric_alarm" "memory-high" {
+    alarm_name = "mem-util-high-agents"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods = "2"
+    metric_name = "MemoryUtilization"
+    namespace = "System/Linux"
+    period = "300"
+    statistic = "Average"
+    threshold = "80"
+    alarm_description = "This metric monitors ec2 memory for high utilization on agent hosts"
+    alarm_actions = [
+        "${aws_autoscaling_policy.agents-scale-up.arn}"
+    ]
+    dimensions {
+        AutoScalingGroupName = "${aws_autoscaling_group.ecs-cluster.name}"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "memory-low" {
+    alarm_name = "mem-util-low-agents"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods = "2"
+    metric_name = "MemoryUtilization"
+    namespace = "System/Linux"
+    period = "300"
+    statistic = "Average"
+    threshold = "40"
+    alarm_description = "This metric monitors ec2 memory for low utilization on agent hosts"
+    alarm_actions = [
+        "${aws_autoscaling_policy.agents-scale-down.arn}"
+    ]
+    dimensions {
+        AutoScalingGroupName = "${aws_autoscaling_group.ecs-cluster.name}"
+    }
+}
+
 resource "aws_launch_configuration" "ecs" {
   name = "ECS ${var.ecs_cluster_name}"
-  image_id = "${lookup(var.amis, var.aws_region)}"
+  image_id      = "${data.aws_ami.ecs_ami.id}"
   instance_type = "${var.instance_type}"
   security_groups = ["${aws_security_group.ecs.id}"]
   iam_instance_profile = "${aws_iam_instance_profile.ecs.name}"
@@ -194,7 +258,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "ecs_service_role_policy" {
-    name = "ecs_service_role_policy"
+  name = "ecs_service_role_policy"
   policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -219,8 +283,8 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "ecs" {
-    name = "ecs-instance-profile"
-    role = "${aws_iam_role.ecs_host_role.name}"
+  name = "ecs-instance-profile"
+  role = "${aws_iam_role.ecs_host_role.name}"
 }
 
 resource "aws_alb" "front" {
@@ -283,7 +347,7 @@ resource "aws_ecs_service" "fubar-http" {
   cluster = "${aws_ecs_cluster.main.id}"
   task_definition = "${aws_ecs_task_definition.fubar-http.arn}"
   iam_role = "${aws_iam_role.ecs_service_role.arn}"
-  desired_count = 6
+  desired_count = 2
   depends_on = ["aws_iam_role_policy.ecs_service_role_policy", "aws_alb_listener.front_80"]
 
   load_balancer {

@@ -7,21 +7,14 @@
   "provisioners": [
     {
         "type": "shell",
-        "inline": [
-            "sudo yum install -y ecs-init",
-            "sudo yum -y install docker > /dev/null 2>&1",
-            "sudo service docker start",
-            "sudo usermod -aG docker $USER",
-            "sudo `aws ecr get-login --no-include-email --region {{user `aws_region`}}`",
-            "sudo start ecs"
-        ]
+        "script": "deploy/packer/application/bootstrap.sh"
     }
   ],
   "builders": [
     {
       "type": "amazon-ebs",
       "region": "{{user `aws_region`}}",
-      "source_ami": "ami-1a7f6d7e",
+      "source_ami": "ami-a1f5e4c5",
       "access_key": "{{user `aws_access_key`}}",
       "secret_key": "{{user `aws_secret_key`}}",
       "instance_type": "t2.micro",
