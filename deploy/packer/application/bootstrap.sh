@@ -5,7 +5,6 @@ sudo iptables -t nat -A OUTPUT -d 169.254.170.2 -p tcp -m tcp --dport 80 -j REDI
 sudo sh -c "iptables-save > /etc/sysconfig/iptables"
 sudo mkdir -p /etc/ecs && sudo touch /etc/ecs/ecs.config
 
-
 sudo yum install -y yum-utils \
   device-mapper-persistent-data \
   lvm2
@@ -20,8 +19,21 @@ sudo yum-config-manager --enable rhui-REGION-rhel-server-extras
 sudo yum install -y container-selinux docker-ce unzip
 
 sudo systemctl start docker
+sudo systemctl enable docker
 
-sudo docker run --name ecs-agent --detach=true --restart=on-failure:10 --volume=/var/run:/var/run --volume=/var/log/ecs/:/log --volume=/var/lib/ecs/data:/data --volume=/etc/ecs:/etc/ecs --net=host --env-file=/etc/ecs/ecs.config amazon/amazon-ecs-agent:latest
+sudo docker run --name ecs-agent \
+    --detach=true \
+    --restart=on-failure:10 \
+    --volume=/var/run/docker.sock:/var/run/docker.sock \
+    --volume=/var/log/ecs:/log \
+    --volume=/var/lib/ecs/data:/data \
+    --net=host \
+    --env-file=/etc/ecs/ecs.config \
+    --env=ECS_LOGFILE=/log/ecs-agent.log \
+    --env=ECS_DATADIR=/data/ \
+    --env=ECS_ENABLE_TASK_IAM_ROLE=true \
+    --env=ECS_ENABLE_TASK_IAM_ROLE_NETWORK_HOST=true \
+    amazon/amazon-ecs-agent:latest
 
 curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
 sudo python get-pip.py

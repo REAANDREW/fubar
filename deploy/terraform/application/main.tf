@@ -192,7 +192,7 @@ resource "aws_launch_configuration" "ecs" {
   #
   key_name = "${aws_key_pair.fubar.key_name}"
   associate_public_ip_address = true
-  user_data = "#!/bin/bash\necho ECS_CLUSTER='${var.ecs_cluster_name}' > /etc/ecs/ecs.config && `aws ecr get-login --region $AWS_DEFAULT_REGION`"
+  user_data = "#!/bin/bash\necho ECS_CLUSTER='${var.ecs_cluster_name}' >> /etc/ecs/ecs.config && `aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION`"
 }
 
 resource "aws_iam_role" "ecs_host_role" {
@@ -282,8 +282,7 @@ EOF
     role = "${aws_iam_role.ecs_service_role.id}"
 }
 
-resource "aws_iam_instance_profile" "ecs" {
-  name = "ecs-instance-profile"
+resource "aws_iam_instance_profile" "ecs" { name = "ecs-instance-profile"
   role = "${aws_iam_role.ecs_host_role.name}"
 }
 
@@ -356,3 +355,40 @@ resource "aws_ecs_service" "fubar-http" {
       container_port = 45000
   }
 }
+
+
+#   resource "aws_iam_role" "ecs_autoscale_service_role" {
+#     name = "ecs_autoscale_service_role"
+#     assume_role_policy = <<EOF
+#   {
+#     "Version": "2012-10-17",
+#     "Statement": [
+#       {
+#         "Effect": "Allow",
+#         "Principal": {
+#           "Service": [
+#             "application-autoscaling.amazonaws.com"
+#           ]
+#         },
+#         "Action": "sts:AssumeRole"
+#       }
+#     ]
+#   }
+#   EOF
+#   }
+
+#   resource "aws_iam_policy_attachment" "ecs_autoscale_service_role_policy" {
+#     name       = "ecs_autoscale_service_role_attach"
+#     roles      = ["${aws_iam_role.ecs_autoscale_service_role.name}"]
+#     policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole"
+#   }
+
+#   resource "aws_appautoscaling_target" "ecs_target" {
+#     max_capacity       = 4
+#     min_capacity       = 1
+#     resource_id        = "service/${aws_ecs_cluster.main.name}/${aws_ecs_service.fubar-http.name}"
+#     role_arn           = "${aws_iam_role.ecs_autoscale_service_role.arn}"
+#     scalable_dimension = "ecs:service:DesiredCount"
+#     service_namespace  = "ecs"
+#   }
+
