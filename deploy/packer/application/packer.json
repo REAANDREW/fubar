@@ -6,6 +6,16 @@
   },
   "provisioners": [
     {
+      "type": "file",
+      "source": "deploy/packer/application/etc/systemd/system/ecs-agent.service",
+      "destination": "/tmp/ecs-agent.service"
+    },
+    {
+      "type": "file",
+      "source": "deploy/packer/application/etc/ecs/ecs.config",
+      "destination": "/tmp/ecs.config"
+    },
+    {
         "type": "shell",
         "script": "deploy/packer/application/bootstrap.sh"
     }
