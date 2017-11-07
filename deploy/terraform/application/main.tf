@@ -22,7 +22,7 @@ data "aws_ami" "ecs_ami" {
 
   filter {
     name   = "name"
-    values = ["rhel-ecs-host"]
+    values = ["ecs-host"]
   }
 }
 
@@ -192,7 +192,7 @@ resource "aws_launch_configuration" "ecs" {
   #
   key_name = "${aws_key_pair.fubar.key_name}"
   associate_public_ip_address = true
-  user_data = "#!/bin/bash\necho ECS_CLUSTER='${var.ecs_cluster_name}' > /etc/ecs/ecs.config && `aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION` && systemctl restart ecs-agent"
+  user_data = "#!/bin/bash\necho ECS_CLUSTER='${var.ecs_cluster_name}' >> /etc/ecs/ecs.config && `aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION`"
 }
 
 resource "aws_iam_role" "ecs_host_role" {

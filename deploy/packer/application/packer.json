@@ -24,13 +24,13 @@
     {
       "type": "amazon-ebs",
       "region": "{{user `aws_region`}}",
-      "source_ami": "ami-a1f5e4c5",
+      "source_ami": "ami-e3051987",
       "access_key": "{{user `aws_access_key`}}",
       "secret_key": "{{user `aws_secret_key`}}",
       "instance_type": "t2.micro",
       "iam_instance_profile": "EC2_PullContainers",
       "ssh_username": "ec2-user",
-      "ami_name": "rhel-ecs-host",
+      "ami_name": "ecs-host",
       "force_deregister": true,
       "force_delete_snapshot": true
     }
