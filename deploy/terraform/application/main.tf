@@ -357,38 +357,38 @@ resource "aws_ecs_service" "fubar-http" {
 }
 
 
-#   resource "aws_iam_role" "ecs_autoscale_service_role" {
-#     name = "ecs_autoscale_service_role"
-#     assume_role_policy = <<EOF
-#   {
-#     "Version": "2012-10-17",
-#     "Statement": [
-#       {
-#         "Effect": "Allow",
-#         "Principal": {
-#           "Service": [
-#             "application-autoscaling.amazonaws.com"
-#           ]
-#         },
-#         "Action": "sts:AssumeRole"
-#       }
-#     ]
-#   }
-#   EOF
-#   }
+resource "aws_iam_role" "ecs_autoscale_service_role" {
+  name = "ecs_autoscale_service_role"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": [
+          "application-autoscaling.amazonaws.com"
+        ]
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
 
-#   resource "aws_iam_policy_attachment" "ecs_autoscale_service_role_policy" {
-#     name       = "ecs_autoscale_service_role_attach"
-#     roles      = ["${aws_iam_role.ecs_autoscale_service_role.name}"]
-#     policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole"
-#   }
+resource "aws_iam_policy_attachment" "ecs_autoscale_service_role_policy" {
+  name       = "ecs_autoscale_service_role_attach"
+  roles      = ["${aws_iam_role.ecs_autoscale_service_role.name}"]
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole"
+}
 
-#   resource "aws_appautoscaling_target" "ecs_target" {
-#     max_capacity       = 4
-#     min_capacity       = 1
-#     resource_id        = "service/${aws_ecs_cluster.main.name}/${aws_ecs_service.fubar-http.name}"
-#     role_arn           = "${aws_iam_role.ecs_autoscale_service_role.arn}"
-#     scalable_dimension = "ecs:service:DesiredCount"
-#     service_namespace  = "ecs"
-#   }
+resource "aws_appautoscaling_target" "ecs_target" {
+  max_capacity       = 4
+  min_capacity       = 1
+  resource_id        = "service/${aws_ecs_cluster.main.name}/${aws_ecs_service.fubar-http.name}"
+  role_arn           = "${aws_iam_role.ecs_autoscale_service_role.arn}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  service_namespace  = "ecs"
+}
 
